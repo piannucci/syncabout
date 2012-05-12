@@ -1,4 +1,4 @@
 CC=c++
 
-strata: random.o strata.o
+strata: random.o strata.o ibf.o
 
