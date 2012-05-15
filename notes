@@ -1,0 +1,26 @@
+problem statement:
+I want a distributed object store with the following properties:
+    x Per-object logging
+    - Idempotent communications
+    - Central RSM server
+    x Mutable objects
+    - Demand-driven synchronization
+    - Push notifications
+    - Access control
+    - Relationship schema
+    - Automated application-defined rebasing
+    - Optimistic consistency
+    x Snapshots
+    - Weak denormalized references
+    - Stored procedures
+
+So my hash object needs to automatically create these logged scalar objects.
+Each scalar should have a cloud of weak references attached to it.
+Getting an update to a scalar should automatically unpack the weak references.
+A weak reference is (id version blob).  A strong reference is an id.
+Mutating an object creates an edit and appends it to the object's log.
+Pulling fetches the log suffix for all objects I ask for, then rebases my edits.
+Pushing sends my edits to the server, and gets back the latest version of each id.
+If the latest version is not what I expected, I might want to pull again.
+A scalar can be in a deleted state -- in this case, all functions return None.
+An edit can abort by returning False, in which case it is a NOP.
